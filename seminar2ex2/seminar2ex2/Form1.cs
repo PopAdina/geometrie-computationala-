@@ -5,7 +5,12 @@ using System.Linq;
 using System.Windows.Forms;
 
 namespace seminar2ex2
-{
+{   /*2. Se dă o mulțime de puncte în plan.Să se determine triunghiul de arie
+minimă ale cărui vârfuri să facă parte din mulțimea dată. (Opțional:
+soluție optimizată bazată pe sortarea punctelor în raport cu relația de
+ordine: (x1, y1) < (x2, y2) d.n.d.x1* y2 < x2* y1 și testarea punctelor
+adiacente din șirul ordonat.)*/
+
     public partial class Form1 : Form
     {
         private List<PointF> points;
