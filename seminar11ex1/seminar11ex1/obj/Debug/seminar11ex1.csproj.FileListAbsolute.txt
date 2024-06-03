@@ -1,0 +1,10 @@
+C:\Users\popad\OneDrive\Desktop\geometrie computationala\seminar11ex1\seminar11ex1\bin\Debug\seminar11ex1.exe.config
+C:\Users\popad\OneDrive\Desktop\geometrie computationala\seminar11ex1\seminar11ex1\bin\Debug\seminar11ex1.exe
+C:\Users\popad\OneDrive\Desktop\geometrie computationala\seminar11ex1\seminar11ex1\bin\Debug\seminar11ex1.pdb
+C:\Users\popad\OneDrive\Desktop\geometrie computationala\seminar11ex1\seminar11ex1\obj\Debug\seminar11ex1.csproj.AssemblyReference.cache
+C:\Users\popad\OneDrive\Desktop\geometrie computationala\seminar11ex1\seminar11ex1\obj\Debug\seminar11ex1.Form1.resources
+C:\Users\popad\OneDrive\Desktop\geometrie computationala\seminar11ex1\seminar11ex1\obj\Debug\seminar11ex1.Properties.Resources.resources
+C:\Users\popad\OneDrive\Desktop\geometrie computationala\seminar11ex1\seminar11ex1\obj\Debug\seminar11ex1.csproj.GenerateResource.cache
+C:\Users\popad\OneDrive\Desktop\geometrie computationala\seminar11ex1\seminar11ex1\obj\Debug\seminar11ex1.csproj.CoreCompileInputs.cache
+C:\Users\popad\OneDrive\Desktop\geometrie computationala\seminar11ex1\seminar11ex1\obj\Debug\seminar11ex1.exe
+C:\Users\popad\OneDrive\Desktop\geometrie computationala\seminar11ex1\seminar11ex1\obj\Debug\seminar11ex1.pdb

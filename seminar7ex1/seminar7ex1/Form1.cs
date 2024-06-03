@@ -1,79 +1,132 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace seminar7ex1
-    //Partiționarea unui poligon simplu cu n>3 vârfuri în triunghiuri (triangularea)
-//folosind diagonalele
+/*Partiționarea unui poligon simplu cu n>3 vârfuri în triunghiuri(triangularea)
+folosind diagonalele.*/
 {
     public partial class Form1 : Form
     {
-        private List<Point> polygon = new List<Point>();
-        private List<List<Point>> triangles = new List<List<Point>>();
+        private List<Point> polygonPoints;
+        private List<Tuple<Point, Point, Point>> triangles;
         public Form1()
         {
             InitializeComponent();
-            pictureBox1.MouseClick += PictureBox1_MouseClick;
+            polygonPoints = new List<Point>();
+            triangles = new List<Tuple<Point, Point, Point>>();
+            this.panel1.Paint += new PaintEventHandler(Panel1_Paint);
+            this.panel1.MouseClick += new MouseEventHandler(Panel1_MouseClick);
+            this.button1.Click += new EventHandler(button1_Click);
         }
-        private void PictureBox1_MouseClick(object sender, MouseEventArgs e)
+        private void Panel1_MouseClick(object sender, MouseEventArgs e)
         {
-            // Adăugăm vârful poligonului la fiecare clic al mouse-ului
-            polygon.Add(e.Location);
-            pictureBox1.Refresh();
+            polygonPoints.Add(new Point(e.X, e.Y));
+            panel1.Invalidate();
+        }
+        private void Panel1_Paint(object sender, PaintEventArgs e)
+        {
+            if (polygonPoints.Count > 1)
+            {
+                e.Graphics.DrawPolygon(Pens.Black, polygonPoints.ToArray());
+            }
+            foreach (var triangle in triangles)
+            {
+                Point[] points = new Point[] { triangle.Item1, triangle.Item2, triangle.Item3 };
+                e.Graphics.DrawPolygon(Pens.Red, points);
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            // Verificăm dacă avem cel puțin 3 vârfuri pentru a triangula poligonul
-            if (polygon.Count < 3)
+            if (polygonPoints.Count > 2)
             {
-                MessageBox.Show("Poligonul trebuie să aibă cel puțin 3 vârfuri.", "Eroare", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            // Triangulăm poligonul
-            triangles = TriangulatePolygon(polygon);
-            pictureBox1.Refresh();
-
-        }
-        private List<List<Point>> TriangulatePolygon(List<Point> polygon)
-        {
-            List<List<Point>> triangles = new List<List<Point>>();
-
-            // Verificăm dacă poligonul are mai mult de 3 vârfuri
-            if (polygon.Count >= 3)
-            {
-                for (int i = 1; i < polygon.Count - 1; i++)
+                TriangulatePolygon();
+                listBox1.Items.Clear();
+                foreach (var triangle in triangles)
                 {
-                    // Construim un triunghi folosind vârful inițial și cele două vârfuri consecutive
-                    List<Point> triangle = new List<Point> { polygon[0], polygon[i], polygon[i + 1] };
-                    triangles.Add(triangle);
+                    listBox1.Items.Add($"({triangle.Item1}, {triangle.Item2}, {triangle.Item3})");
+                }
+                panel1.Invalidate();
+            }
+        }
+        private void TriangulatePolygon()
+        {
+            triangles.Clear();
+            List<Point> points = new List<Point>(polygonPoints);
+            while (points.Count > 3)
+            {
+                bool earFound = false;
+                for (int i = 0; i < points.Count; i++)
+                {
+                    int prevIndex = (i == 0) ? points.Count - 1 : i - 1;
+                    int nextIndex = (i == points.Count - 1) ? 0 : i + 1;
+                    Point prevPoint = points[prevIndex];
+                    Point currPoint = points[i];
+                    Point nextPoint = points[nextIndex];
+
+                    if (IsEar(prevPoint, currPoint, nextPoint, points))
+                    {
+                        triangles.Add(Tuple.Create(prevPoint, currPoint, nextPoint));
+                        points.RemoveAt(i);
+                        earFound = true;
+                        break;
+                    }
+                }
+                if (!earFound)
+                {
+                    break;
                 }
             }
-
-            return triangles;
-        }
-        private void PictureBox1_Paint(object sender, PaintEventArgs e)
-        {
-            // Desenăm poligonul
-            if (polygon.Count >= 3)
+            if (points.Count == 3)
             {
-                e.Graphics.DrawPolygon(Pens.Black, polygon.ToArray());
+                triangles.Add(Tuple.Create(points[0], points[1], points[2]));
             }
-
-            // Desenăm triunghiurile rezultate din triangularea poligonului
-            foreach (var triangle in triangles)
-            {
-                e.Graphics.DrawPolygon(Pens.Red, triangle.ToArray());
-            } 
-
         }
 
-        private void MainForm_Load(object sender, EventArgs e)
+        private bool IsEar(Point p1, Point p2, Point p3, List<Point> points)
         {
+            if (GetOrientation(p1, p2, p3) != -1)
+            {
+                return false;
+            }
+            for (int i = 0; i < points.Count; i++)
+            {
+                if (points[i] != p1 && points[i] != p2 && points[i] != p3 &&
+                    IsPointInTriangle(points[i], p1, p2, p3))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
 
+        private int GetOrientation(Point p1, Point p2, Point p3)
+        {
+            int val = (p2.Y - p1.Y) * (p3.X - p2.X) - (p2.X - p1.X) * (p3.Y - p2.Y);
+            if (val == 0)
+            {
+                return 0; // collinear
+            }
+            return (val > 0) ? 1 : -1; // clock or counterclock wise
+        }
+
+        private bool IsPointInTriangle(Point pt, Point v1, Point v2, Point v3)
+        {
+            bool b1, b2, b3;
+
+            b1 = Sign(pt, v1, v2) < 0.0f;
+            b2 = Sign(pt, v2, v3) < 0.0f;
+            b3 = Sign(pt, v3, v1) < 0.0f;
+
+            return ((b1 == b2) && (b2 == b3));
+        }
+
+        private float Sign(Point p1, Point p2, Point p3)
+        {
+            return (p1.X - p3.X) * (p2.Y - p3.Y) - (p2.X - p3.X) * (p1.Y - p3.Y);
         }
     }
+
 }

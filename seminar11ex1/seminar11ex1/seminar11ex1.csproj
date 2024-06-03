@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7D107B8F-A8DC-4B41-A3E5-347D984EFBBF}</ProjectGuid>
+    <ProjectGuid>{4B816AEA-25F4-4A98-ABA8-25DA3E633D24}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>seminar7ex1</RootNamespace>
-    <AssemblyName>seminar7ex1</AssemblyName>
+    <RootNamespace>seminar11ex1</RootNamespace>
+    <AssemblyName>seminar11ex1</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
